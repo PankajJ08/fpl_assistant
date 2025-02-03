@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FPL Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #37003c;
+            --secondary-color: #00ff85;
+            --text-color: #ffffff;
+            --background-color: #f8f8f8;
+            --chat-bg: #ffffff;
+            --user-message-bg: #37003c;
+            --bot-message-bg: #e8e8e8;
+            --sidebar-width: 250px;
+        }
+
+        body, html {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: var(--background-color);
+        }
+
+        .container {
+            display: flex;
+            height: 100%;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            overflow-y: auto;
+            position: fixed;
+            height: 100%;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .sidebar-content {
+            padding: 20px;
+        }
+
+        .sidebar.closed {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-toggle {
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+            position: fixed;
+            left: 10px;
+            top: 10px;
+            z-index: 1001;
+        }
+
+        .sidebar h2 {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar h2 i {
+            margin-right: 10px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar ul li i {
+            margin-right: 10px;
+            color: var(--secondary-color);
+        }
+
+        .chat-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            margin-left: var(--sidebar-width);
+            transition: margin-left 0.3s ease;
+        }
+
+        .chat-container.full-width {
+            margin-left: 0;
+        }
+
+        .chat-header {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-header i {
+            margin-right: 10px;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background-color: var(--chat-bg);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            max-width: 70%;
+            word-wrap: break-word;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-message {
+            background-color: var(--user-message-bg);
+            color: var(--text-color);
+            align-self: flex-end;
+            border-bottom-right-radius: 0;
+        }
+
+        .bot-message {
+            background-color: var(--bot-message-bg);
+            color: var(--primary-color);
+            align-self: flex-start;
+            border-bottom-left-radius: 0;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            background-color: var(--chat-bg);
+            border-top: 1px solid #ccc;
+        }
+
+        .chat-input input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 30px;
+            font-size: 16px;
+        }
+
+        .chat-input button {
+            padding: 10px 20px;
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            border: none;
+            border-radius: 30px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .chat-input button:hover {
+            background-color: #00cc6a;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .chat-container {
+                margin-left: 0;
+            }
+
+            .sidebar-toggle {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-content">
+                <h2><i class="fas fa-futbol"></i> FPL Assistant</h2>
+                <p>Welcome to your Fantasy Premier League chatbot assistant. Here you can get advice on:</p>
+                <ul>
+                    <li><i class="fas fa-users"></i> Team selection</li>
+                    <li><i class="fas fa-star"></i> Captain choices</li>
+                    <li><i class="fas fa-exchange-alt"></i> Transfer strategies</li>
+                    <li><i class="fas fa-microchip"></i> Chip usage</li>
+                    <li><i class="fas fa-chart-line"></i> Player statistics</li>
+                </ul>
+                <p>Just ask your question in the chat to get started!</p>
+            </div>
+        </div>
+        <div class="chat-container" id="chatContainer">
+            <div class="chat-header">
+                <i class="fas fa-robot"></i> Fantasy Premier League Assistant
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <!-- Messages will be dynamically added here -->
+            </div>
+            <form class="chat-input" id="chatForm">
+                <input type="text" id="userInput" placeholder="Ask about FPL..." required>
+                <button type="submit"><i class="fas fa-paper-plane"></i></button>
+            </form>
+        </div>
+    </div>
+
+<script>
+    const chatForm = document.getElementById('chatForm');
+    const userInput = document.getElementById('userInput');
+    const chatMessages = document.getElementById('chatMessages');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebar');
+    const chatContainer = document.getElementById('chatContainer');
+
+    // Toggle sidebar
+    sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        chatContainer.classList.toggle('full-width');
+    });
+
+    // Close sidebar by default on mobile
+    function checkWindowSize() {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.remove('open');
+            chatContainer.classList.add('full-width');
+        } else {
+            sidebar.classList.add('open');
+            chatContainer.classList.remove('full-width');
+        }
+    }
+
+    // Check window size on load and resize
+    window.addEventListener('load', checkWindowSize);
+    window.addEventListener('resize', checkWindowSize);
+
+    // Add an initial bot message
+    addMessage('bot', "Hello! I'm your Fantasy Premier League assistant. How can I help you today?");
+
+    chatForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const message = userInput.value.trim();
+        if (message) {
+            addMessage('user', message);
+            userInput.value = '';
+            // Send the message to the Flask backend
+            sendMessageToFlask(message);
+        }
+    });
+
+    function addMessage(sender, text) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
+        messageElement.textContent = text;
+        chatMessages.appendChild(messageElement);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Function to send the message to Flask backend and get response
+    async function sendMessageToFlask(message) {
+        try {
+            const response = await fetch('/chatbot/ask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ question: message })
+            });
+
+            const data = await response.json();
+            // Once we receive the response from Flask, add it to the chat
+            if (data && data.answer) {
+                addMessage('bot', data.answer);
+            } else {
+                addMessage('bot', "I'm sorry, I couldn't process your request.");
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            addMessage('bot', "Sorry, there was an error processing your message.");
+        }
+    }
+</script>
+
+</body>
+</html>
