@@ -26,7 +26,7 @@ You can interact with the chatbot using natural language queries. Below are some
 ### 1. **Get Player Stats**
    - **Query:** *"Give me stats of player - Salah."*
    - **Expected Response:**
-     - The chatbot should return Haaland’s latest FPL stats, including:
+     - The chatbot should return Mohammad Salah latest FPL stats, including:
        - Goals scored
        - Assists
        - Appearances
@@ -35,7 +35,7 @@ You can interact with the chatbot using natural language queries. Below are some
        - Yellow/red cards (if applicable)
      - **Example Response:**
        ```
-       Player: Haaland
+       Player: Salah
        - Goals: 18
        - Assists: 5
        - Appearances: 20
