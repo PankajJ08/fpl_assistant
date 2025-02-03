@@ -74,6 +74,6 @@ Since this project is still in the development phase, contributions are welcome.
 If you have any suggestions or feedback, feel free to reach out:
 
 📧 **Email:** [gmail](mailto:pankajpjkj@gmail.com)  
-🐦 **Twitter/X:** [@pankaj_0802](https://twitter.com/yourtwitterhandle)
+🐦 **Twitter/X:** [@pankaj_0802](https://twitter.com/pankaj_0802)
 
 ---
