@@ -71,7 +71,7 @@ You can run the chatbot locally by following these steps:
 ### **1️⃣ Clone the Repository**  
 
 ```bash
-git clone https://github.com/yourusername/fpl-assistant.git
+git clone https://github.com/PankajJ08/fpl-assistant.git
 cd fpl-assistant
 
 pip install -r requirements.txt
