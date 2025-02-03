@@ -24,7 +24,7 @@ This chatbot helps FPL managers get real-time information such as player statist
 You can interact with the chatbot using natural language queries. Below are some example questions you can ask:
 
 ### 1. **Get Player Stats**
-   - **Query:** *"Give me stats of player - Haaland."*
+   - **Query:** *"Give me stats of player - Salah."*
    - **Expected Response:**
      - The chatbot should return Haaland’s latest FPL stats, including:
        - Goals scored
