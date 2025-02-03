@@ -63,6 +63,25 @@ You can interact with the chatbot using natural language queries. Below are some
 
 ---
 
+
+## How to Run Locally  
+
+You can run the chatbot locally by following these steps:  
+
+### **1️⃣ Clone the Repository**  
+
+```bash
+git clone https://github.com/yourusername/fpl-assistant.git
+cd fpl-assistant
+
+pip install -r requirements.txt
+
+python run.py
+
+```
+
+---
+
 ## Contributing
 
 Since this project is still in the development phase, contributions are welcome. If you'd like to help improve the chatbot, feel free to fork the repository and submit a pull request.
